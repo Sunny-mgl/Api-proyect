@@ -28,47 +28,48 @@ class ApplicationService {
         return appli
     }
 
-    static async createApplication(body) {
+    static async createApplication(obj) {
         const transaction = await models.sequelize.transaction()
         try {
-            const newApplication = await models.Applications.create({
+            const newApplication = await models.Applications.create({ 
                 // esta es otra forma de hacer lo hice en update
-                user_id: body.user_id,
-                legal_first_names: body.legal_first_names,
-                legal_last_names: body.legal_last_names,
-                nationality: body.nationality,
-                email: body.email,
-                phone: body.phone,
-                date_of_birth_date: body.date_of_birth_date,
-                gender: body.gender,
-                passport_number: body.passport_number,
-                passport_expiration_date: body.passport_expiration_date,
-                residence: body.residence,
-                residence_address: body.residence_address,
-                job: body.job,
-                comments: body.comments,
+                user_id: obj.user_id,
+                legal_first_names: obj.legal_first_names,
+                legal_last_names: obj.legal_last_names,
+                nationality: obj.nationality,
+                email: obj.email,
+                phone: obj.phone,
+                date_of_birth: obj.date_of_birth,
+                gender: obj.gender,
+                passport_number: obj.passport_number,
+                passport_expiration_date: obj.passport_expiration_date,
+                residence: obj.residence,
+                residence_address: obj.residence_address,
+                job: obj.job,
+                comments: obj.comments,
                 status: 'draft'
             }, {
                 transaction
-            })
+            } 
+            )  
             
-            await transaction.commit()
+            await transaction.commit()      
             return newApplication
-        } catch (error) {
+        } catch (error) { 
             await transaction.rollback()
-           throw error 
+           throw error  
         }
     }
 
 
     // cuando creamos, actualizamos o borramos debemos hacer una trasaccion
-    static async updateApplication(id, body) {
+    static async updateApplication(id, obj) {
         const transaction = await models.sequelize.transaction()
         try {
             const application = await models.Applications.findByPk(id)
             if (!application) throw new CustomError('Not fount applicatios', 404, 'Not found')
 
-            const updateApplicati = await application.update(body, {
+            const updateApplicati = await application.update(obj, {
                 transaction,
                 // si yo saco unos de los campos ue se encuentra en field no se va a actualizar, por ejemplo aqui no se pase el user_id porque es el que no quiero actulizar 
                 fields: [

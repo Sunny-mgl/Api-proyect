@@ -8,8 +8,7 @@ const applicationNotConfir = require('../middlewares/isConfirPut.middelwares')
 
 router.route('/application')
 .get(passport.authenticate('jwt', {session: false}), getApplication)
-.post(passport.authenticate('jwt', {session: false}), createApplication)
 .put(passport.authenticate('jwt', {session: false}), applicationNotConfir, updateApplication)
-
+.post(passport.authenticate('jwt', {session: false}), createApplication)
 
 module.exports = router
