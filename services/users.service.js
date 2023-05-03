@@ -5,34 +5,27 @@ const  {CustomError}  = require('../utils/helpers');
 const { hashPassword } = require('../libs/bcrypt');
 
 class UsersService {
-
   constructor() {
   }
-
   async findAndCount(query) {
     const options = {
       where: {},
     }
-
     const { limit, offset } = query
     if (limit && offset) {
       options.limit = limit
       options.offset = offset
     }
-
     const { id } = query
     if (id) {
       options.where.id = id
     }
-
     const { email } = query
     if (email) {
       options.where.email = { [Op.iLike]: `%${email}%` }
     }
-
     //Necesario para el findAndCountAll de Sequelize
     options.distinct = true
-
     const users = await models.Users.findAndCountAll(options)
     return users
   }
@@ -40,11 +33,9 @@ class UsersService {
   async createAuthUser(obj) {
     const transaction = await models.sequelize.transaction()
     try {
-
       obj.id = uuid4()
       obj.password = hashPassword(obj.password)
       let newUser = await models.Users.create(obj, { transaction, fields: ['id', 'password', 'email'] })
-
       await transaction.commit()
       return newUser
     } catch (error) {
@@ -53,6 +44,19 @@ class UsersService {
     }
   }
   
+  async createStripeClient(id, customer) {
+    const transaction = await models.sequelize.transaction()
+    try{
+      let user = await models.Users.findByPk(id)
+      if (!user) throw new CustomError('Not found User', 404, 'Not Found')
+      await user.createStripe_client({user_id: user.id, client_id:customer}, { transaction })
+      await transaction.commit()
+      return user
+    } catch(error) {
+      await transaction.rollback()
+      throw error
+    }
+  }
   
   async getAuthUserOr404(id) {
     let user = await models.Users.scope('auth_flow').findByPk(id, { raw: true })
@@ -62,6 +66,20 @@ class UsersService {
 
   async getUser(id) {
     let user = await models.Users.findByPk(id)
+    if (!user) throw new CustomError('Not found User', 404, 'Not Found')
+    return user
+  }
+
+  async getUserStripeClient(id) {
+    let user = await models.Users.findByPk(id, {
+      attributes: ['id', 'email'],
+      include: [
+        {
+          model: models.UsersStripe,
+          as: 'stripe_client'
+        }
+      ],
+    })
     if (!user) throw new CustomError('Not found User', 404, 'Not Found')
     return user
   }
@@ -101,7 +119,6 @@ class UsersService {
     }
   }
 
-
   async setTokenUser(id, token) {
     const transaction = await models.sequelize.transaction()
     try {
@@ -115,7 +132,6 @@ class UsersService {
       throw error
     }
   }
-
   
   async removeTokenUser(id) {
     const transaction = await models.sequelize.transaction()
@@ -133,12 +149,9 @@ class UsersService {
   async verifiedTokenUser(id, token, exp) {
     const transaction = await models.sequelize.transaction()
     try {
-
       if (!id) throw new CustomError('Not ID provided', 400, 'Bad Request')
       if (!token) throw new CustomError('Not token provided', 400, 'Bad Request')
       if (!exp) throw new CustomError('Not exp exist', 400, 'Bad Request')
-      
-
       let user = await models.Users.findOne({
         where: {
           id,
@@ -170,7 +183,6 @@ class UsersService {
       throw error
     }
   }
-
 }
 
 module.exports = UsersService
