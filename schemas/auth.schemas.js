@@ -13,7 +13,6 @@ const restorePasswordSchema = Joi.object({
   password: Joi.string().required()
 })
 
-
 module.exports = {
   signupSchema,
   forgetPasswordSchema,
