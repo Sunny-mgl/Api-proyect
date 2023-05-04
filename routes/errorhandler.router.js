@@ -11,7 +11,7 @@ const {
 function routerErrorHandler(app) {
   /* Apply Middlewares */
   if (process.env.NODE_ENV != 'test') app.use(logErrors);
-  // app.use(logErrors);
+  app.use(logErrors);
   app.use(handlerAuthError);
   app.use(ormErrorHandler);
   app.use(errorHandler);

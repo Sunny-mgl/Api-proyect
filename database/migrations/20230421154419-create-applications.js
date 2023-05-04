@@ -71,12 +71,6 @@ module.exports = {
         status: {
           type: Sequelize.STRING,
           allowNull: false,
-          validate: {
-            isInt: [
-              'draft',
-              'confirmed'
-            ]
-          }
         },
         created_at: {
           allowNull: false,

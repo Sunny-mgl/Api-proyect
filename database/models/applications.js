@@ -10,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      
+
       Applications.belongsTo(models.Users, {
-        as: 'user', foreignKey:'user_id'
+        as: 'user', foreignKey: 'user_id'
       })
       Applications.hasMany(models.ApplicationsPhotos, {
         as: 'photos', foreignKey: 'applications_id'
       })
       Applications.hasMany(models.ApplicationDocuments, {
-        as:'documents', foreignKey:'applications_id'
+        as: 'documents', foreignKey: 'applications_id'
       })
       Applications.hasMany(models.ApplicationsPayments, {
-        as:'payments', foreignKey: 'applications_id'
+        as: 'payments', foreignKey: 'applications_id'
       })
     }
   }
@@ -86,14 +86,21 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
-  }, 
-  {
-    sequelize,
-    modelName: 'Applications',
-    tableName: 'applications',
-    underscored: true,
-    timestamps: true
-  });
+      validate: {
+        isIn: [[
+          'draft',
+          'confirmed',
+        ]]
+      }
+    },
+
+  },
+    {
+      sequelize,
+      modelName: 'Applications',
+      tableName: 'applications',
+      underscored: true,
+      timestamps: true
+    });
   return Applications;
 };

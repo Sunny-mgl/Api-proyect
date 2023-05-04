@@ -272,8 +272,7 @@ test("Dont allow more than One Application", async () => {
     });
 
   expect(applicationCreateUser1.status).toBe(409);
-  // console.log(applicationCreateUser1.body)
-  // expect(applicationCreateUser1.body.message).toContain("duplicate key value violates unique constraint «applications_pkey»")
+  expect(applicationCreateUser1.body.message).toContain("llave duplicada viola restricción de unicidad «applications_pkey»")
 });
 
 test("Update Application Dont Update USER ID", async () => {
@@ -313,7 +312,7 @@ test("Update Application Dont Update USER ID", async () => {
     .send({
       user_id: user3me.body.results.id,
     });
-  console.log(applicationUpdateUser1.body)
+
   expect(applicationUpdateUser1.status).toBe(200);
 
   const applicationUser1 = await request(app)

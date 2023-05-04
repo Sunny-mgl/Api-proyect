@@ -9,12 +9,12 @@ const routerErrorHandler = require('./routes/errorhandler.router')
 
 
 const app = express()
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8001
 
 /*
 Cors Settings
 */
-const whitelist = ['http://localhost:8000']
+const whitelist = ['http://localhost:8001']
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) ||  !origin) {
