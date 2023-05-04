@@ -59,39 +59,39 @@ class ApplicationService {
         transaction
       })
             
-      await transaction.commit()
-      return newApplication
-    } catch (error) {
-      await transaction.rollback()
-      throw error 
+            await transaction.commit()
+            return newApplication
+        } catch (error) {
+            await transaction.rollback()
+           throw error 
+        }
     }
-  }
 
 
-  // cuando creamos, actualizamos o borramos debemos hacer una trasaccion
-  static async updateApplication(id, body) {
-    const transaction = await models.sequelize.transaction()
-    try {
-      const application = await models.Applications.findByPk(id)
-      if (!application) throw new CustomError('Not fount applicatios', 404, 'Not found')
+    // cuando creamos, actualizamos o borramos debemos hacer una trasaccion
+    static async updateApplication(id, body) {
+        const transaction = await models.sequelize.transaction()
+        try {
+            const application = await models.Applications.findByPk(id)
+            if (!application) throw new CustomError('Not fount applicatios', 404, 'Not found')
 
-      const updateApplicati = await application.update(body, {
-        transaction,
-        // si yo saco unos de los campos ue se encuentra en field no se va a actualizar, por ejemplo aqui no se pase el user_id porque es el que no quiero actulizar 
-        fields: [
-          'legal_first_names', 'legal_last_names', 'nationality', 'email', ' phone', 'date_of_birth',
-          'gender', ' passport_number', 'passport_expiration_date', 'residence', 'residence_address', 'job',
-          'comments', 'status'
-        ]
-      })
-      // cuando hacemos una transaction es importante hacer un commit y roolback
-      await transaction.commit()
-      return updateApplicati
-    } catch (error) {
-      await transaction.rollback()
-      throw error
+            const updateApplicati = await application.update(body, {
+                transaction,
+                // si yo saco unos de los campos ue se encuentra en field no se va a actualizar, por ejemplo aqui no se pase el user_id porque es el que no quiero actulizar 
+                fields: [
+                    'legal_first_names', 'legal_last_names', 'nationality', 'email', ' phone', 'date_of_birth_date',
+                    'gender', ' passport_number', 'passport_expiration_date', 'residence', 'residence_address', 'job',
+                    'comments', 'status'
+                ]
+            })
+            // cuando hacemos una transaction es importante hacer un commit y roolback
+            await transaction.commit()
+            return updateApplicati
+        } catch (error) {
+            await transaction.rollback()
+            throw error
+        }
     }
-  }
 }
 
 

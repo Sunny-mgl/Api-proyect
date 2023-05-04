@@ -21,6 +21,7 @@ module.exports = {
          allowNull: false
        },
        order: {
+        primaryKey: true,
          type: Sequelize.INTEGER,
          allowNull: false
        },

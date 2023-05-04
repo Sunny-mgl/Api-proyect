@@ -13,5 +13,4 @@ router.route('/application')
   .get(passport.authenticate('jwt', {session: false}), getApplication)
   .put(passport.authenticate('jwt', {session: false}), applicationNotConfir, updateApplication)
 
-
 module.exports = router
