@@ -34,7 +34,6 @@ const updateApplication = async (request, response, next) => {
   }
 }
 
-
 module.exports = {
   getApplication,
   createApplication,

@@ -12,6 +12,7 @@ function routerModels(app) {
   app.use('/api/v1', router)
   router.use('/auth', routesAuth)
   router.use('/applications', routesApplication)
+
 }
 
 module.exports = routerModels

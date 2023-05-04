@@ -92,6 +92,25 @@ class ApplicationService {
       throw error
     }
   }
+
+  async addPaymentInfo(user_id, payment_intent) {
+    const transaction = await models.sequelize.transaction()
+    try {
+      let application = await models.Applications.findByPk(user_id)
+
+      if (!application) throw new CustomError('Not found Application', 404, 'Not Found')
+
+      await application.createPayment({application_id:user_id, payment_intent:payment_intent},{ transaction })
+
+      await transaction.commit()
+
+      return application
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
+  }
+
 }
 
 
