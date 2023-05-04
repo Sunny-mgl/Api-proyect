@@ -10,8 +10,9 @@ router.route('/')
   .post(passport.authenticate('jwt', {session: false}), createApplication)
 
 router.route('/application')
-  .get(passport.authenticate('jwt', {session: false}), getApplication)
-  .put(passport.authenticate('jwt', {session: false}), applicationNotConfir, updateApplication)
+.get(passport.authenticate('jwt', {session: false}), getApplication)
+.post(passport.authenticate('jwt', {session: false}), createApplication)
+.put(passport.authenticate('jwt', {session: false}), applicationNotConfir, updateApplication)
 
 
 module.exports = router
