@@ -29,7 +29,7 @@ class ApplicationService {
   }
 
 
-  async getApplicationOr404raw(id) {
+  static async getApplicationOr404raw(id) {
     const appli = await models.Applications.findByPk(id, {raw: true})
     if (!appli) throw new CustomError('Not fount applicatios', 404, 'Not found')
     return appli

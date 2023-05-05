@@ -1,8 +1,14 @@
-const stripeLocal = require('../config/stripeLocal')
-const usersService = require('../services/users.service')
-const productssService = require('../services/products.service')
-const CustomError = require('../utils/CustomError')  /* Custom Error Handler    VERIFICAR */
+//const stripeLocal = require('../config/stripeLocal')
+const stripeLocal = require('../database/config/stripeLocal')
 
+
+const UsersService = require('../services/users.service')
+const ProductssService = require('../services/products.service')
+const ApplicationsService = require('../services/application.service')
+const {CustomError} = require('../utils/helpers')  /* Custom Error Handler    VERIFICAR */
+
+const usersService = new UsersService()
+const productssService = new ProductssService()
 
 const getOrCreateStripeUserByEmail = async (request, response, next) => {
   try {
@@ -57,7 +63,7 @@ const stripeCheckout = async (request, response, next) => {
 const applicationIsConfirmedOrErr = async (request, response, next) => {
   try {
     let { id } = request.user
-    let application = await applicationsService.getApplicationOr404raw(id)
+    let application = await ApplicationsService.getApplicationOr404raw(id)
     
     if (application.status != 'confirmed') throw new CustomError('Application is not Confirmed', 403, 'Permission Denied')
 

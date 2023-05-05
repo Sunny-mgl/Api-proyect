@@ -1,8 +1,4 @@
 const express = require('express')
-// const routesUsers = require('./users.routes')
-
-// const isAuthenticatedByPassportJwt = require('../libs/passport')
-
 const routesAuth = require('./auth.routes')
 const routesApplication = require('./application.routes')
 
