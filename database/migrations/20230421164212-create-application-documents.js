@@ -4,26 +4,26 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.createTable('application_documents', {
-       applications_id:{
-        type: Sequelize.UUID,
-        allowNull: false,
-        primaryKey: true,
-        foreignKey: true,
-        references: {
-          model: 'applications',
-          key: 'user_id'
+        applications_id:{
+          type: Sequelize.UUID,
+          allowNull: false,
+          primaryKey: true,
+          foreignKey: true,
+          references: {
+            model: 'applications',
+            key: 'user_id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'RESTRICT'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
-       },
-       url: {
-         type: Sequelize.TEXT,
-         allowNull: false
-       },
-       order: {
-         type: Sequelize.INTEGER,
-         allowNull: false
-       },
+        url: {
+          type: Sequelize.TEXT,
+          allowNull: false
+        },
+        order: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
         created_at: {
           allowNull: false,
           type: Sequelize.DATE,

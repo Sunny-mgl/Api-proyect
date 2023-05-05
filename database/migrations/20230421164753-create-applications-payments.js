@@ -4,27 +4,27 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.createTable('applications_payments', {
-       id:{
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-       },
-       applications_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        foreignKey: true,
-        references: {
-          model: 'applications',
-          key: 'user_id'
+        id:{
+          type: Sequelize.BIGINT,
+          allowNull: false,
+          primaryKey: true,
+          autoIncrement: true
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
-       },
-       payment_intent: {
-         type: Sequelize.STRING,
-         allowNull: false
-       },
+        applications_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          foreignKey: true,
+          references: {
+            model: 'applications',
+            key: 'user_id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'RESTRICT'
+        },
+        payment_intent: {
+          type: Sequelize.STRING,
+          allowNull: false
+        },
         created_at: {
           allowNull: false,
           type: Sequelize.DATE,

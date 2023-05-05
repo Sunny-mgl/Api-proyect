@@ -72,3 +72,9 @@ const applicationIsConfirmedOrErr = async (request, response, next) => {
     return next(error);
   }
 };
+
+module.exports = {
+  getOrCreateStripeUserByEmail,
+  stripeCheckout,
+  applicationIsConfirmedOrErr,
+}
